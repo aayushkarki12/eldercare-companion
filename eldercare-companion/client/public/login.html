@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eldercare Companion - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6C63FF;
+      --secondary: #4DAAF8;
+      --danger: #e04141;
+      --success: #3da769;
+      --dark: #22223b;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f7faff 60%, #e6eaff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.10), 0 1.5px 8px rgba(77,170,248,0.08);
+      padding: 2.5rem 2.5rem 2rem 2.5rem;
+      max-width: 520px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .login-container h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .login-container .icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: #444;
+      font-weight: 500;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #d1d5fa;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f7faff;
+      transition: border 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border: 1.5px solid var(--primary);
+      box-shadow: 0 2px 8px rgba(108,99,255,0.08);
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.9rem 0;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(108,99,255,0.10);
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background: linear-gradient(90deg, #5a52e0, #4DAAF8);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .login-links {
+      margin-top: 1.5rem;
+      font-size: 0.98rem;
+      color: #666;
+    }
+    .login-links a {
+      color: var(--primary);
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .login-links a:hover {
+      color: var(--secondary);
+    }
+    @media (max-width: 500px) {
+      .login-container {
+        padding: 1.2rem 0.5rem;
+      }
+    }
+  </style>
+  <!-- Add Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQtea2bYeDQoMSv4kqI4vATFCXE2f7Y1o",
+        authDomain: "elderlycare-bc048.firebaseapp.com",
+        projectId: "elderlycare-bc048",
+        storageBucket: "elderlycare-bc048.firebasestorage.app",
+        messagingSenderId: "546743940118",
+        appId: "1:546743940118:web:81b3cb1d0f93803e2ff137"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Wait for DOM to load before adding event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Handle login form submission
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        auth.signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+            // Login successful
+            alert('Login successful!');
+            window.location.href = "dashboard.html"; // Redirect to dashboard
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      });
+
+      // Google Auth
+      document.getElementById('google-login').addEventListener('click', function() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+          .then(result => {
+            // Google login successful
+            alert('Login successful!');
+            window.location.href = "dashboard.html";
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="icon">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <h1>Login</h1>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="password" name="password" placeholder="Your password" required>
+      </div>
+      <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+    <button id="google-login" class="btn-primary" style="background: #fff; color: #444; border: 1.5px solid #6C63FF; margin-top: 1rem; display: flex; align-items: center; justify-content: center;">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:22px;height:22px;margin-right:10px;">
+      Sign in with Google
+    </button>
+    <div class="login-links">
+      <a href="#">Forgot password?</a> | 
+      <a href="signup.html">Create an account</a>
+    </div>
+  </div>
+</body>
+</html>

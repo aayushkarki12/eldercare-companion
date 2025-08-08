@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | ElderCare Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    :root {
+      --primary: #6C63FF;
+      --secondary: #4DAAF8;
+      --dark: #2D3748;
+      --light: #F7FAFC;
+      --success: #48BB78;
+      --warning: #ED8936;
+      --danger: #F56565;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f7faff 60%, #e6eaff 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Navigation */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    /* Profile Container */
+    .profile-container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.10), 0 1.5px 8px rgba(77,170,248,0.08);
+      padding: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .profile-avatar {
+      font-size: 4rem;
+      color: var(--primary);
+      margin-right: 2rem;
+    }
+    
+    .profile-info h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .profile-info p {
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .detail-card {
+      background: #f7faff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .detail-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .detail-card p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 3rem 5%;
+      text-align: center;
+      margin-top: auto;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .social-icons a {
+      color: white;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+    
+    .social-icons a:hover {
+      color: var(--primary);
+    }
+    
+    .copyright {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+    
+    /* Auth Buttons */
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .btn-login {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      margin-right: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .btn-login:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-signup {
+      background-color: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .btn-signup:hover {
+      background-color: #5a52e0;
+    }
+    
+    /* Profile and Logout button styles */
+    .profile-btn {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #6C63FF, #4DAAF8);
+      color: #fff !important;
+      border: none;
+      border-radius: 30px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 4px 16px rgba(108,99,255,0.10);
+      transition: background 0.2s, transform 0.2s;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .profile-btn:hover,
+    .profile-btn:focus {
+      background: linear-gradient(90deg, #5a52e0, #4DAAF8);
+      transform: translateY(-2px) scale(1.03);
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    .profile-avatar-small {
+      font-size: 1.7rem;
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .profile-text {
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-logout {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      color: #6C63FF;
+      border: 2px solid #6C63FF;
+      border-radius: 30px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 4px 16px rgba(108,99,255,0.08);
+      transition: background 0.2s, color 0.2s, border 0.2s, transform 0.2s;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    
+    .btn-logout:hover,
+    .btn-logout:focus {
+      background: #6C63FF;
+      color: #fff;
+      border-color: #6C63FF;
+      transform: translateY(-2px) scale(1.03);
+    }
+    
+    .btn-logout i {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    
+    .logout-text {
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Edit Button */
+    .btn-edit {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background-color: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    
+    .btn-edit:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+        /* Wider Profile Container */
+    .profile-container {
+      width: 90%;
+      max-width: 1000px;  /* Increased from 800px */
+      margin: 2rem auto;  /* Reduced vertical margin */
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.10), 0 1.5px 8px rgba(77,170,248,0.08);
+      padding: 2.5rem;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: auto;  /* Remove fixed height */
+    }
+    
+    /* Profile Header - Horizontal Layout */
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    
+    .profile-avatar {
+      font-size: 4rem;
+      color: var(--primary);
+      margin-right: 2rem;
+      flex-shrink: 0;
+    }
+    
+    .profile-info {
+      flex-grow: 1;
+    }
+    
+    .profile-info h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    /* Details Grid - 2 columns */
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);  /* Two equal columns */
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    
+    .detail-card {
+      background: #f7faff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+      height: 100%;  /* Make cards equal height */
+    }
+    
+    /* Footer - Keep existing styles */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 3rem 5%;
+      text-align: center;
+      margin-top: auto;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+      }
+      
+      .profile-details {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">ElderCare Companion</div>
+    <div class="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./wellness.html">Services</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+    </div>
+    <div class="auth-buttons" id="auth-buttons">
+      <a href="./login.html" class="btn btn-login">Login</a>
+      <a href="signup.html" class="btn btn-signup">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- Profile Content -->
+  <main class="profile-container" id="profile-content">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="profile-info">
+        <h1 id="user-name">Loading...</h1>
+        <p id="user-email">Loading email...</p>
+        <p id="member-since">Member since: Loading...</p>
+        <p id="user-role">Role: Loading...</p>
+        <a href="edit-profile.html" class="btn-edit">Edit Profile</a>
+      </div>
+    </div>
+    
+    <div class="profile-details">
+      <div class="detail-card">
+        <h3>Contact Information</h3>
+        <p id="user-phone">Phone: Loading...</p>
+        <p id="user-address">Address: Loading...</p>
+      </div>
+      
+      <div class="detail-card">
+        <h3>Account Details</h3>
+        <p id="account-email">Email: Loading...</p>
+        <p id="account-created">Account created: Loading...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="./index.html">Home</a>
+      <a href="./wellness.html">Services</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+    <p class="copyright">© 2023 ElderCare Companion. All rights reserved.</p>
+  </footer>
+
+  <!-- Add Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQtea2bYeDQoMSv4kqI4vATFCXE2f7Y1o",
+      authDomain: "elderlycare-bc048.firebaseapp.com",
+      projectId: "elderlycare-bc048",
+      storageBucket: "elderlycare-bc048.appspot.com",
+      messagingSenderId: "546743940118",
+      appId: "1:546743940118:web:81b3cb1d0f93803e2ff137"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Auth state management
+    function renderAuthButtons(user) {
+      const authButtons = document.getElementById('auth-buttons');
+      if (!authButtons) return;
+      
+      if (user) {
+        authButtons.innerHTML = `
+          <a href="./profile.html" class="btn profile-btn" title="Profile">
+            <span class="profile-avatar-small">
+              <i class="fas fa-user-circle"></i>
+            </span>
+            <span class="profile-text">Profile</span>
+          </a>
+          <button id="logout-btn" class="btn btn-logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="logout-text">Logout</span>
+          </button>
+        `;
+        
+        document.getElementById('logout-btn').onclick = function() {
+          auth.signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        };
+        
+        // Load user profile data from the "userId" document
+        loadUserProfile(user);
+      } else {
+        authButtons.innerHTML = `
+          <a href="./login.html" class="btn btn-login">Login</a>
+          <a href="signup.html" class="btn btn-signup">Sign Up</a>
+        `;
+        window.location.href = "login.html";
+      }
+    }
+
+    // Load user profile data from the shared "userId" document
+    function loadUserProfile(user) {
+      // Show loading state
+      document.getElementById('user-name').textContent = "Loading...";
+      document.getElementById('user-email').textContent = user.email || "Loading email...";
+      
+      // Access the document with ID "userId" in the users collection
+      db.collection('users').doc("userId").get()
+        .then(doc => {
+          if (doc.exists) {
+            const userData = doc.data();
+            
+            // Update profile info
+            document.getElementById('user-name').textContent = userData.fullname || 'Not provided';
+            document.getElementById('user-email').textContent = userData.email || user.email;
+            document.getElementById('user-role').textContent = `Role: ${userData.role || 'client'}`;
+            
+            // Format the createdAt date
+            let createdAtDate = 'Unknown';
+            if (userData.createdAt) {
+              if (userData.createdAt.toDate) {
+                createdAtDate = userData.createdAt.toDate().toLocaleDateString();
+              } else {
+                createdAtDate = new Date(userData.createdAt).toLocaleDateString();
+              }
+            }
+            document.getElementById('member-since').textContent = `Member since: ${createdAtDate}`;
+            
+            // Update contact info
+            document.getElementById('user-phone').textContent = `Phone: ${userData.phone || 'Not provided'}`;
+            document.getElementById('user-address').textContent = `Address: ${userData.address || 'Not provided'}`;
+            
+            // Update account details
+            document.getElementById('account-email').textContent = `Email: ${userData.email || user.email}`;
+            document.getElementById('account-created').textContent = `Account created: ${createdAtDate}`;
+          } else {
+            console.log("No user data found in Firestore");
+            // Fallback to auth data
+            document.getElementById('user-name').textContent = user.displayName || 'User';
+            document.getElementById('member-since').textContent = `Member since: ${new Date(user.metadata.creationTime).toLocaleDateString()}`;
+            document.getElementById('account-created').textContent = `Account created: ${new Date(user.metadata.creationTime).toLocaleDateString()}`;
+          }
+        })
+        .catch(error => {
+          console.error("Error getting user data:", error);
+          // Show error message to user
+          document.getElementById('user-name').textContent = 'Error loading profile';
+          document.getElementById('user-email').textContent = user.email;
+          
+          if (error.code === 'permission-denied') {
+            alert("You don't have permission to view this profile. Please contact support.");
+          } else {
+            alert("Error loading profile data. Please try again later.");
+          }
+        });
+    }
+
+    // Listen for auth state changes
+    auth.onAuthStateChanged(renderAuthButtons);
+  </script>
+</body>
+</html>

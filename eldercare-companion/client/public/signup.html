@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eldercare Companion - Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Add Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+    :root {
+      --primary: #6C63FF;
+      --secondary: #4DAAF8;
+      --danger: #e04141;
+      --success: #3da769;
+      --dark: #22223b;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f7faff 60%, #e6eaff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signup-container {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.10), 0 1.5px 8px rgba(77,170,248,0.08);
+      padding: 2.5rem 2.5rem 2rem 2.5rem;
+      max-width: 520px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .signup-container h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .signup-container .icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: #444;
+      font-weight: 500;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid #d1d5fa;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f7faff;
+      transition: border 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border: 1.5px solid var(--primary);
+      box-shadow: 0 2px 8px rgba(108,99,255,0.08);
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.9rem 0;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(108,99,255,0.10);
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background: linear-gradient(90deg, #5a52e0, #4DAAF8);
+      transform: translateY(-2px) scale(1.01);
+    }
+    .signup-links {
+      margin-top: 1.5rem;
+      font-size: 0.98rem;
+      color: #666;
+    }
+    .signup-links a {
+      color: var(--primary);
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .signup-links a:hover {
+      color: var(--secondary);
+    }
+    .error-message {
+      color: var(--danger);
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    @media (max-width: 500px) {
+      .signup-container {
+        padding: 1.2rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="icon">
+      <i class="fas fa-user-plus"></i>
+    </div>
+    <h1>Create Account</h1>
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name" required>
+      </div>
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password (min 6 characters)" minlength="6" required>
+        <div id="password-error" class="error-message"></div>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password"><i class="fas fa-lock"></i> Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password" required>
+        <div id="confirm-error" class="error-message"></div>
+      </div>
+      <button type="submit" class="btn-primary" id="signup-btn">Sign Up</button>
+      <div id="form-error" class="error-message" style="text-align: center; margin-top: 1rem;"></div>
+    </form>
+    <div class="signup-links">
+      Already have an account?
+      <a href="login.html">Log In</a>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQtea2bYeDQoMSv4kqI4vATFCXE2f7Y1o",
+      authDomain: "elderlycare-bc048.firebaseapp.com",
+      projectId: "elderlycare-bc048",
+      storageBucket: "elderlycare-bc048.appspot.com",
+      messagingSenderId: "546743940118",
+      appId: "1:546743940118:web:81b3cb1d0f93803e2ff137"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Form submission handler
+    document.getElementById('signup-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      // Clear previous errors
+      document.getElementById('password-error').textContent = '';
+      document.getElementById('confirm-error').textContent = '';
+      document.getElementById('form-error').textContent = '';
+      
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        document.getElementById('confirm-error').textContent = 'Passwords do not match';
+        return;
+      }
+      
+      // Validate password length
+      if (password.length < 6) {
+        document.getElementById('password-error').textContent = 'Password must be at least 6 characters';
+        return;
+      }
+      
+      // Disable button during processing
+      const signupBtn = document.getElementById('signup-btn');
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating account...';
+      
+      try {
+        // Create user with Firebase Authentication
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // Create user document in Firestore
+        await db.collection('users').doc(user.uid).set({
+          fullname: name,
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          role: 'client' // Default role
+        });
+        
+        // Redirect to profile page after successful signup
+        window.location.href = 'profile.html';
+        
+      } catch (error) {
+        console.error('Signup error:', error);
+        let errorMessage = 'Signup failed. Please try again.';
+        
+        // Handle specific Firebase errors
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'This email is already registered.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Please enter a valid email address.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'Password should be at least 6 characters.';
+        }
+        
+        document.getElementById('form-error').textContent = errorMessage;
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+      }
+    });
+
+    // Password validation on the fly
+    document.getElementById('password').addEventListener('input', function() {
+      if (this.value.length > 0 && this.value.length < 6) {
+        document.getElementById('password-error').textContent = 'Password must be at least 6 characters';
+      } else {
+        document.getElementById('password-error').textContent = '';
+      }
+    });
+
+    // Confirm password validation
+    document.getElementById('confirm-password').addEventListener('input', function() {
+      const password = document.getElementById('password').value;
+      if (this.value !== password) {
+        document.getElementById('confirm-error').textContent = 'Passwords do not match';
+      } else {
+        document.getElementById('confirm-error').textContent = '';
+      }
+    });
+  </script>
+</body>
+</html>
