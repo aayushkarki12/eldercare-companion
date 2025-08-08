@@ -1,0 +1,124 @@
+/* General Styles */
+.booking-container, .service-detail-container, 
+.about-container, .contact-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Booking Page Specific */
+.booking-steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 1rem;
+  border-bottom: 3px solid #ddd;
+}
+
+.step.active {
+  border-color: #6C63FF;
+  font-weight: 600;
+}
+
+.service-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-option input[type="radio"] {
+  display: none;
+}
+
+.service-option label {
+  display: block;
+  padding: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.service-option input[type="radio"]:checked + label {
+  border-color: #6C63FF;
+  background-color: #f8f9ff;
+}
+
+/* Service Detail Page Specific */
+.service-hero {
+  height: 300px;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.service-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.booking-card {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* About Page Specific */
+.about-hero {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+              url('../images/about-hero.jpg');
+  background-size: cover;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.team-grid, .values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Contact Page Specific */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+}
+
+.contact-map {
+  margin-top: 3rem;
+  height: 400px;
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .service-content, .contact-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .booking-steps {
+    flex-direction: column;
+  }
+}
